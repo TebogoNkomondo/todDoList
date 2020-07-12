@@ -1,6 +1,7 @@
 const express = require('express')
 const mongodb = require('mongodb')
 const exphbs = require('express-handlebars')
+const sanitizeHTML = require('sanitize-html')
 
 const app = express()
 
@@ -53,7 +54,8 @@ app.get('/', (req, res) => {
 })
 
 app.post('/create-item', (req, res) => {
-  db.collection('items').insertOne({ text: req.body.text }, (err, info) => {
+  const safeText = sanitizeHTML(req.body.text, { allowedTags: [], allowedAttributes: {} })
+  db.collection('items').insertOne({ text: safeText }, (err, info) => {
     if (err) {
       console.log('error creating')
     } else {

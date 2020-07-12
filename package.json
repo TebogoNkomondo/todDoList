@@ -16,6 +16,7 @@
     "express-handlebars": "^5.0.0",
     "mongodb": "^3.5.9",
     "nodemon": "^2.0.4",
+    "sanitize-html": "^1.27.0",
     "standard": "^14.3.4"
   }
 }
