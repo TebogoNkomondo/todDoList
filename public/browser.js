@@ -14,6 +14,8 @@ document.getElementById('create-form').addEventListener('submit', (e) => {
   axios.post('/create-item', { text: createField.value }).then((response) => {
     // create the HTML for new item
     document.getElementById('item-list').insertAdjacentHTML('beforeend', itemTemplate(response.data))
+    createField.value = ''
+    createField.focus()
   }).catch(() => {
     console.log('communication with server failed during creation')
   })
