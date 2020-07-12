@@ -65,7 +65,8 @@ app.post('/create-item', (req, res) => {
 })
 
 app.post('/update-item', (req, res) => {
-  db.collection('items').findOneAndUpdate({ _id: new mongodb.ObjectID(req.body.id) }, { $set: { text: req.body.text } }, () => {
+  const safeText = sanitizeHTML(req.body.text, { allowedTags: [], allowedAttributes: {} })
+  db.collection('items').findOneAndUpdate({ _id: new mongodb.ObjectID(req.body.id) }, { $set: { text: safeText } }, () => {
     res.send('Success')
   })
 })
