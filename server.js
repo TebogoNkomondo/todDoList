@@ -17,13 +17,18 @@ app.set('view engine', '.hbs')
 app.use(express.static('public'))
 
 let db
+
+let port = process.env.PORT
+if (port == null || '') {
+  port = 3000
+}
 const connectionString = 'mongodb+srv://toDoAppUser:todoappuser@cluster0.fcwxa.mongodb.net/toDoApp?retryWrites=true&w=majority'
 mongodb.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true }, (err, client) => {
   db = client.db()
   if (err) {
     console.log('error accessing database')
   } else {
-    app.listen(3000, () => {
+    app.listen(port, () => {
       console.log('listening on 3000')
     })
   }
