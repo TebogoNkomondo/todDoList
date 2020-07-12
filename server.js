@@ -19,13 +19,15 @@ let db
 const connectionString = 'mongodb+srv://toDoAppUser:todoappuser@cluster0.fcwxa.mongodb.net/toDoApp?retryWrites=true&w=majority'
 mongodb.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true }, (err, client) => {
   db = client.db()
-  console.log(err)
-  app.listen(3000, () => {
-    console.log('listening on 3000')
-  })
+  if (err) {
+    console.log('error accessing database')
+  } else {
+    app.listen(3000, () => {
+      console.log('listening on 3000')
+    })
+  }
 })
 
-// {useNewUrlParser: true, useUnifiedTopology: true}
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
@@ -35,8 +37,6 @@ app.get('/', (req, res) => {
       console.log('error retrieving data')
     } else {
       res.render('index', { items: items })
-      // console.log(items)
-      // res.sendFile('index.html', { root: __dirname })
     }
   })
 })
