@@ -31,6 +31,17 @@ mongodb.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: t
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
+const passwordProtected = (req, res, next) => {
+  res.set('WWW-authenticate', 'Basic realm="Simple To Do"')
+  if (req.headers.authorization == 'Basic bGVhcm46amF2YXNjcmlwdA==') {
+    next()
+  } else {
+    res.status(401).send('Authentication required')
+  }
+}
+// enable password protection for all routes
+app.use(passwordProtected)
+
 app.get('/', (req, res) => {
   db.collection('items').find().toArray((err, items) => {
     if (err) {
