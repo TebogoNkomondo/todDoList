@@ -42,19 +42,23 @@ app.get('/', (req, res) => {
 })
 
 app.post('/create-item', (req, res) => {
-  db.collection('items').insertOne({ text: req.body.item }, () => {
-    res.redirect('/')
+  db.collection('items').insertOne({ text: req.body.text }, (err, info) => {
+    if (err) {
+      console.log('error creating')
+    } else {
+      res.json(info.ops[0])
+    }
   })
 })
 
 app.post('/update-item', (req, res) => {
   db.collection('items').findOneAndUpdate({ _id: new mongodb.ObjectID(req.body.id) }, { $set: { text: req.body.text } }, () => {
-    res.redirect('/')
+    res.send('Success')
   })
 })
 
 app.post('/delete-item', (req, res) => {
   db.collection('items').deleteOne({ _id: new mongodb.ObjectID(req.body.id) }, () => {
-    res.redirect('/')
+    res.send('Success')
   })
 })
